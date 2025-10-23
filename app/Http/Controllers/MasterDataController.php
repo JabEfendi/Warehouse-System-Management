@@ -88,10 +88,21 @@ class MasterDataController extends Controller
             'id'         => $user->id,
             'name'       => $user->name,
             'email'      => $user->email,
+            'role_id'    => $user->role_id,
             'role'       => $user->role->name ?? '-',
             'status'     => $user->status,
             'created_at' => optional($user->created_at)->toDateTimeString()
         ]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json(['message' => 'User role updated successfully']);
+    }
+
 }
 

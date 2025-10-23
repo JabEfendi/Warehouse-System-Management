@@ -20,6 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/users',  [MasterDataController::class, 'index'])->name('api.users');
     Route::post('/api/users/{id}/status', [MasterDataController::class, 'updateStatus']);
     Route::get('/api/users/{user}', [MasterDataController::class, 'show']);
+    Route::get('/api/roles', function () {return \App\Models\Roles::select('id','name')->orderBy('name')->get();});
+    Route::patch('/api/users/{id}', [MasterDataController::class, 'update']);
+
 
     Route::view('/inbound', 'inbound', ['title' => 'Inbound']);
     Route::view('/inventory', 'inventory', ['title' => 'Inventory']);
