@@ -339,102 +339,102 @@
     let initialRoleId = null;
 
     async function loadRoles(currentRoleId = null, currentRoleName = '') {
-  // Ambil data roles (cache hanya data, bukan tampilan)
-  if (!rolesCache) {
-    const res = await fetch('/api/roles', { headers: { Accept: 'application/json' }});
-    if (!res.ok) throw new Error(await res.text());
-    rolesCache = await res.json();
-  }
+      // Ambil data roles (cache hanya data, bukan tampilan)
+      if (!rolesCache) {
+        const res = await fetch('/api/roles', { headers: { Accept: 'application/json' }});
+        if (!res.ok) throw new Error(await res.text());
+        rolesCache = await res.json();
+      }
 
-  const sel = document.getElementById('ud_role');
-  sel.innerHTML = '';
+      const sel = document.getElementById('ud_role');
+      sel.innerHTML = '';
 
-  // Jika user punya role, jadikan role tersebut sebagai placeholder
-  if (currentRoleId && currentRoleName) {
-    const placeholder = document.createElement('option');
-    placeholder.value = currentRoleId;
-    placeholder.textContent = `-- ${currentRoleName} (current) --`;
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    sel.appendChild(placeholder);
-  } else {
-    // Jika user belum punya role sama sekali
-    const placeholder = document.createElement('option');
-    placeholder.value = '';
-    placeholder.textContent = '-- No role assigned --';
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    sel.appendChild(placeholder);
-  }
+      // Jika user punya role, jadikan role tersebut sebagai placeholder
+      if (currentRoleId && currentRoleName) {
+        const placeholder = document.createElement('option');
+        placeholder.value = currentRoleId;
+        placeholder.textContent = `-- ${currentRoleName} (current) --`;
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        sel.appendChild(placeholder);
+      } else {
+        // Jika user belum punya role sama sekali
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '-- No role assigned --';
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        sel.appendChild(placeholder);
+      }
 
-  // Tambahkan semua role lain
-  rolesCache.forEach(r => {
-    const opt = document.createElement('option');
-    opt.value = String(r.id);
-    opt.textContent = r.name;
-    sel.appendChild(opt);
-  });
+      // Tambahkan semua role lain
+      rolesCache.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = String(r.id);
+        opt.textContent = r.name;
+        sel.appendChild(opt);
+      });
 
-  return rolesCache;
-}
-
-
-async function viewUser(id) {
-  // Reset state
-  userModalLoading.classList.remove('hidden');
-  userModalContent.classList.add('hidden');
-  userModalError.classList.add('hidden');
-
-  btnUpdateUser.disabled = true;
-  btnUpdateUser.classList.add('opacity-50', 'cursor-not-allowed');
-
-  openUserModal();
-
-  try {
-    // Ambil data user
-    const res = await fetch(`/api/users/${id}`, { headers: { 'Accept': 'application/json' }});
-    if (!res.ok) throw new Error(await res.text());
-    const u = await res.json();
-
-    currentUserId = u.id;
-    initialRoleId = u.role_id ? String(u.role_id) : null;
-    const currentRoleName = u.role ?? ''; // pastikan API kirim 'role_name'
-
-    // Debug
-    console.log('User role_id:', u.role, 'role_name:', currentRoleName);
-
-    // Panggil loadRoles, gunakan role user sebagai placeholder
-    await loadRoles(initialRoleId, currentRoleName);
-
-    // Isi data user lain
-    ud_name.textContent  = u.name ?? '-';
-    ud_email.textContent = u.email ?? '-';
-    ud_created_at.textContent = u.created_at ?? '-';
-
-    if (u.status) {
-      const statusText = u.status.charAt(0).toUpperCase() + u.status.slice(1);
-      ud_status.innerHTML = `<span class="inline-block px-2 py-1 text-xs font-medium rounded ${badge(u.status)}">${statusText}</span>`;
-    } else {
-      ud_status.innerHTML = '-';
+      return rolesCache;
     }
 
-    // Event listener untuk tombol update
-    const sel = document.getElementById('ud_role');
-    sel.addEventListener('change', () => {
-      btnUpdateUser.disabled = (sel.value === initialRoleId || sel.value === '');
-      btnUpdateUser.classList.toggle('opacity-50', btnUpdateUser.disabled);
-      btnUpdateUser.classList.toggle('cursor-not-allowed', btnUpdateUser.disabled);
-    });
 
-    // Tampilkan isi modal
-    userModalLoading.classList.add('hidden');
-    userModalContent.classList.remove('hidden');
-  } catch (err) {
-    console.error(err);
-    userModalLoading.classList.add('hidden');
-    userModalError.classList.remove('hidden');
-  }
-}
+    async function viewUser(id) {
+      // Reset state
+      userModalLoading.classList.remove('hidden');
+      userModalContent.classList.add('hidden');
+      userModalError.classList.add('hidden');
+
+      btnUpdateUser.disabled = true;
+      btnUpdateUser.classList.add('opacity-50', 'cursor-not-allowed');
+
+      openUserModal();
+
+      try {
+        // Ambil data user
+        const res = await fetch(`/api/users/${id}`, { headers: { 'Accept': 'application/json' }});
+        if (!res.ok) throw new Error(await res.text());
+        const u = await res.json();
+
+        currentUserId = u.id;
+        initialRoleId = u.role_id ? String(u.role_id) : null;
+        const currentRoleName = u.role ?? ''; // pastikan API kirim 'role_name'
+
+        // Debug
+        console.log('User role_id:', u.role, 'role_name:', currentRoleName);
+
+        // Panggil loadRoles, gunakan role user sebagai placeholder
+        await loadRoles(initialRoleId, currentRoleName);
+
+        // Isi data user lain
+        ud_name.textContent  = u.name ?? '-';
+        ud_email.textContent = u.email ?? '-';
+        ud_created_at.textContent = u.created_at ?? '-';
+
+        if (u.status) {
+          const statusText = u.status.charAt(0).toUpperCase() + u.status.slice(1);
+          ud_status.innerHTML = `<span class="inline-block px-2 py-1 text-xs font-medium rounded ${badge(u.status)}">${statusText}</span>`;
+        } else {
+          ud_status.innerHTML = '-';
+        }
+
+        // Event listener untuk tombol update
+        const sel = document.getElementById('ud_role');
+        sel.addEventListener('change', () => {
+          btnUpdateUser.disabled = (sel.value === initialRoleId || sel.value === '');
+          btnUpdateUser.classList.toggle('opacity-50', btnUpdateUser.disabled);
+          btnUpdateUser.classList.toggle('cursor-not-allowed', btnUpdateUser.disabled);
+        });
+
+        // Tampilkan isi modal
+        userModalLoading.classList.add('hidden');
+        userModalContent.classList.remove('hidden');
+      } catch (err) {
+        console.error(err);
+        userModalLoading.classList.add('hidden');
+        userModalError.classList.remove('hidden');
+      }
+    }
 
 
 

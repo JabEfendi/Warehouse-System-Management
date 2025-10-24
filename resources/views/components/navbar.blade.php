@@ -9,11 +9,217 @@
               <div class="ml-10 flex items-baseline space-x-4">
                 <!-- Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
                 <x-nav-link href="/" :active="request()->is('/')">Homepage</x-nav-link>
-                <x-nav-link href="/masterdata" :active="request()->is('masterdata')">Master Data</x-nav-link>
-                <x-nav-link href="/inbound" :active="request()->is('inbound')">Inbound</x-nav-link>
+                <!-- <x-nav-link href="/masterdata" :active="request()->is('masterdata')">Master Data</x-nav-link> -->
+                
+                <!-- Master Data Dropdown -->
+                <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+                  <button @click="open = !open"
+                    class="flex items-center text-gray-300 hover:text-white px-3 py-2 rounded-md font-medium focus:outline-none">
+                    <span>Master Data</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 size-4 transition-transform"
+                      :class="open ? 'rotate-180' : 'rotate-0'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Grid -->
+                  <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
+                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-user text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Users
+                      </span>
+                    </a>
+                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-box text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Products
+                      </span>
+                    </a>
+                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-truck text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Suppliers
+                      </span>
+                    </a>
+                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-gear text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- Inbounds Dropdown -->
+                <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+                  <button @click="open = !open"
+                    class="flex items-center text-gray-300 hover:text-white px-3 py-2 rounded-md font-medium focus:outline-none">
+                    <span>Inbounds</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 size-4 transition-transform"
+                      :class="open ? 'rotate-180' : 'rotate-0'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Grid -->
+                  <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
+                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-user text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Users
+                      </span>
+                    </a>
+                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-box text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Products
+                      </span>
+                    </a>
+                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-truck text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Suppliers
+                      </span>
+                    </a>
+                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-gear text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- Inventory Dropdown -->
+                <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+                  <button @click="open = !open"
+                    class="flex items-center text-gray-300 hover:text-white px-3 py-2 rounded-md font-medium focus:outline-none">
+                    <span>Inventory</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 size-4 transition-transform"
+                      :class="open ? 'rotate-180' : 'rotate-0'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Grid -->
+                  <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
+                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-user text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Users
+                      </span>
+                    </a>
+                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-box text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Products
+                      </span>
+                    </a>
+                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-truck text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Suppliers
+                      </span>
+                    </a>
+                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-gear text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- Outbounds Dropdown -->
+                <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+                  <button @click="open = !open"
+                    class="flex items-center text-gray-300 hover:text-white px-3 py-2 rounded-md font-medium focus:outline-none">
+                    <span>Outbounds</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 size-4 transition-transform"
+                      :class="open ? 'rotate-180' : 'rotate-0'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Grid -->
+                  <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
+                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-user text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Users
+                      </span>
+                    </a>
+                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-box text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Products
+                      </span>
+                    </a>
+                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-truck text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Suppliers
+                      </span>
+                    </a>
+                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-gear text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- Reports Dropdown -->
+                <div x-data="{ open: false }" class="relative" @mouseenter="open = true" @mouseleave="open = false">
+                  <button @click="open = !open"
+                    class="flex items-center text-gray-300 hover:text-white px-3 py-2 rounded-md font-medium focus:outline-none">
+                    <span>Reports</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 size-4 transition-transform"
+                      :class="open ? 'rotate-180' : 'rotate-0'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Grid -->
+                  <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
+                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-user text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Users
+                      </span>
+                    </a>
+                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-box text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Products
+                      </span>
+                    </a>
+                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-truck text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Suppliers
+                      </span>
+                    </a>
+                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                      <i class="fa-solid fa-gear text-lg"></i>
+                      <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                      </span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- <x-nav-link href="/inbound" :active="request()->is('inbound')">Inbound</x-nav-link>
                 <x-nav-link href="/inventory" :active="request()->is('inventory')">Invetory</x-nav-link>
                 <x-nav-link href="/outbound" :active="request()->is('outbound')">Outbound</x-nav-link>
-                <x-nav-link href="/report" :active="request()->is('report')">Reports</x-nav-link>
+                <x-nav-link href="/report" :active="request()->is('report')">Reports</x-nav-link> -->
               </div>
             </div>
           </div>
