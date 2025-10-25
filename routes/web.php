@@ -24,7 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/api/users/{id}', [MasterDataController::class, 'update']);
     
     Route::get('/masterdata/Warehouse-Layout-Management', [\App\Http\Controllers\MasterDataController::class, 'wl_management'])->name('Warehouse-Layout-Management');
-    Route::get('/masterdata/Product-&-item-master', [\App\Http\Controllers\MasterDataController::class, 'pi-master'])->name('Product-&-item-master');
+    Route::get('/api/products', [ProductController::class, 'index']);
+    Route::get('/api/products/{id}', [ProductController::class, 'show']);
+    Route::post('/api/products', [ProductController::class, 'store']);
+    Route::put('/api/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/api/products/{id}', [ProductController::class, 'destroy']);
+    
+    Route::get('/masterdata/Product-&-item-master', [\App\Http\Controllers\MasterDataController::class, 'pi_master'])->name('Product-&-item-master');
     Route::get('/System-Config', [\App\Http\Controllers\MasterDataController::class, 'sc'])->name('System-Config');
 
 

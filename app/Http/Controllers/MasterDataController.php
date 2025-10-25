@@ -67,7 +67,9 @@ class MasterDataController extends Controller
 
     public function pi_master()
     {
-
+        return view('product_master', [
+            'title' => 'Product & Item Master'
+        ]);
     }
 
     public function sc()
