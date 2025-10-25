@@ -25,28 +25,28 @@
 
                   <!-- Dropdown Grid -->
                   <div x-show="open" x-transition class="absolute left-0 mt-2 w-32 bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 z-50 grid grid-cols-2 gap-3 text-center">
-                    <a href="/masterdata/users" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                    <a href="/masterdata/users-&-Role-Management" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
                       <i class="fa-solid fa-user text-lg"></i>
                       <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
                         Users
                       </span>
                     </a>
-                    <a href="/masterdata/products" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                    <a href="/masterdata/Warehouse-Layout-Management" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
                       <i class="fa-solid fa-box text-lg"></i>
                       <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Products
+                        Warehouse
                       </span>
                     </a>
-                    <a href="/masterdata/suppliers" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                    <a href="/masterdata/Product-&-item-master" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
                       <i class="fa-solid fa-truck text-lg"></i>
                       <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Suppliers
+                        Product
                       </span>
                     </a>
-                    <a href="/masterdata/settings" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
+                    <a href="/masterdata/System-Config" class="relative group flex items-center justify-center size-12 rounded-lg bg-gray-700 hover:bg-indigo-600 text-gray-200 hover:text-white transition">
                       <i class="fa-solid fa-gear text-lg"></i>
                       <span class="absolute bottom-14 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Settings
+                        Config
                       </span>
                     </a>
                   </div>

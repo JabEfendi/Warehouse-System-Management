@@ -54,10 +54,25 @@ class MasterDataController extends Controller
         // Kalau bukan request JSON -> render Blade (title tetap ada)
         $roles = Roles::select('id','name')->orderBy('name')->get();
 
-        return view('masterdata', [
-            'title' => 'Master Data',
+        return view('users', [
+            'title' => 'Users & Role Management',
             'roles' => $roles,
         ]);
+    }
+
+    public function wl_management()
+    {
+        
+    }
+
+    public function pi_master()
+    {
+
+    }
+
+    public function sc()
+    {
+
     }
 
     public function updateStatus(Request $request, $id)

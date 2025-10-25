@@ -16,12 +16,16 @@ Route::post('/register', [AuthController::class, 'regist'])->name('register');
 Route::middleware('auth')->group(function () {
     Route::get('/', fn() => view('homepage', ['title' => 'Home Page']))->name('homepage');
     
-    Route::get('/masterdata', [\App\Http\Controllers\MasterDataController::class, 'index'])->name('masterdata');
+    Route::get('/masterdata/users-&-Role-Management', [\App\Http\Controllers\MasterDataController::class, 'index'])->name('users-&-Role-Management');
     Route::get('/api/users',  [MasterDataController::class, 'index'])->name('api.users');
     Route::post('/api/users/{id}/status', [MasterDataController::class, 'updateStatus']);
     Route::get('/api/users/{user}', [MasterDataController::class, 'show']);
     Route::get('/api/roles', function () {return \App\Models\Roles::select('id','name')->orderBy('name')->get();});
     Route::patch('/api/users/{id}', [MasterDataController::class, 'update']);
+    
+    Route::get('/masterdata/Warehouse-Layout-Management', [\App\Http\Controllers\MasterDataController::class, 'wl_management'])->name('Warehouse-Layout-Management');
+    Route::get('/masterdata/Product-&-item-master', [\App\Http\Controllers\MasterDataController::class, 'pi-master'])->name('Product-&-item-master');
+    Route::get('/System-Config', [\App\Http\Controllers\MasterDataController::class, 'sc'])->name('System-Config');
 
 
     Route::view('/inbound', 'inbound', ['title' => 'Inbound']);

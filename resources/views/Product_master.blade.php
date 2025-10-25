@@ -1,6 +1,5 @@
-{{-- resources/views/masterdata.blade.php --}}
 <x-layout>
-  <x-slot:title>{{ $title ?? 'Master Data' }}</x-slot:title>
+  <x-slot:title>{{ $title ?? 'Product & Item Master' }}</x-slot:title>
   <div class="tbl overflow-hidden w-full">
     <div class="mb-4 flex flex-wrap items-center gap-2">
       <input id="search" type="text" placeholder="Search name/email"
