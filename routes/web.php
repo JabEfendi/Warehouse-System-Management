@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/signin', fn() => view('signin', ['title' => 'Sign In']))->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -11,6 +12,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/signup', fn() => view('signup', ['title' => 'Sign Up']))->name('signup');
 Route::post('/register', [AuthController::class, 'regist'])->name('register');
+
+
+Route::get('/api/products/form-options', [ProductController::class, 'formOptions'])->name('products.formOptions');
 
 // hanya user login yang boleh ke homepage
 Route::middleware('auth')->group(function () {
@@ -23,14 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/roles', function () {return \App\Models\Roles::select('id','name')->orderBy('name')->get();});
     Route::patch('/api/users/{id}', [MasterDataController::class, 'update']);
     
-    Route::get('/masterdata/Warehouse-Layout-Management', [\App\Http\Controllers\MasterDataController::class, 'wl_management'])->name('Warehouse-Layout-Management');
+    Route::get('/masterdata/Warehouse-Layout-Management', [\App\Http\Controllers\MasterDataController::class, 'wl_management'])->name('Warehouse-Layout-Management');    
+    
+    Route::get('/masterdata/Product-&-item-master', [\App\Http\Controllers\MasterDataController::class, 'pi_master'])->name('Product-&-item-master');
     Route::get('/api/products', [ProductController::class, 'index']);
     Route::get('/api/products/{id}', [ProductController::class, 'show']);
-    Route::post('/api/products', [ProductController::class, 'store']);
+    Route::post('/api/products', [ProductController::class, 'store'])->name('products.store');
     Route::put('/api/products/{id}', [ProductController::class, 'update']);
     Route::delete('/api/products/{id}', [ProductController::class, 'destroy']);
     
-    Route::get('/masterdata/Product-&-item-master', [\App\Http\Controllers\MasterDataController::class, 'pi_master'])->name('Product-&-item-master');
+
     Route::get('/System-Config', [\App\Http\Controllers\MasterDataController::class, 'sc'])->name('System-Config');
 
 

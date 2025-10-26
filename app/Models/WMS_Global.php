@@ -11,14 +11,12 @@ class WMS_Global extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $table = null; // akan diatur dinamis
     public $timestamps = true;
 
     protected static function boot()
     {
         parent::boot();
 
-        // Otomatis isi created_by & updated_by bila kolomnya ada
         static::creating(function ($model) {
             if (Auth::check() && $model->isFillable('created_by')) {
                 $model->created_by = Auth::user()->name ?? Auth::user()->email;
@@ -32,61 +30,63 @@ class WMS_Global extends Model
         });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | SECTION: PRODUCT MODEL LOGIC
-    |--------------------------------------------------------------------------
-    */
-    public static function product()
+    // ===== Mapping kolom dinamis per tabel =====
+    protected function setFillableFor($table)
+    {
+        $map = [
+            'products' => [
+                'kode_product', 'name', 'description',
+                'harga_beli', 'harga_jual', 'stock_quantity',
+                'stok_minimum', 'category_id', 'uom_id',
+                'supplier_id', 'is_active', 'created_by', 'updated_by'
+            ],
+            'categories' => ['name', 'description', 'created_by', 'updated_by'],
+            'suppliers'  => ['name', 'address', 'phone', 'created_by', 'updated_by'],
+            'uoms'       => ['name', 'symbol', 'created_by', 'updated_by'],
+        ];
+
+        $this->fillable = $map[$table] ?? [];
+        return $this;
+    }
+
+    // ===== Factory Instance per tabel =====
+    protected static function instanceFor($table)
     {
         $instance = new static;
-        $instance->table = 'products';
-        $instance->fillable = [
-            'kode_product',
-            'name',
-            'description',
-            'harga_beli',
-            'harga_jual',
-            'stock_quantity',
-            'stok_minimum',
-            'category_id',
-            'uom_id',
-            'supplier_id',
-            'is_active',
-            'created_by',
-        ];
+        $instance->setTable($table);
+        $instance->setFillableFor($table);
         return $instance;
     }
 
-    // Fungsi relasi manual (dipanggil setelah product() digunakan)
-    public function category()
+    public static function product()
     {
-        return $this->belongsTo(WMS_Global::class, 'category_id');
+        return static::instanceFor('products');
     }
 
-    public function supplier()
+    public static function category()
     {
-        return $this->belongsTo(WMS_Global::class, 'supplier_id');
+        return static::instanceFor('categories');
     }
 
-    public function uom()
+    public static function supplier()
     {
-        return $this->belongsTo(WMS_Global::class, 'uom_id');
+        return static::instanceFor('suppliers');
     }
 
-    // Status stok otomatis
+    public static function uom()
+    {
+        return static::instanceFor('uoms');
+    }
+
+    // ===== Accessor tambahan =====
     public function getStockStatusAttribute()
     {
         if (!isset($this->stock_quantity) || !isset($this->stok_minimum)) {
             return null;
         }
 
-        if ($this->stock_quantity <= 0) {
-            return 'empty';
-        } elseif ($this->stock_quantity <= $this->stok_minimum) {
-            return 'low';
-        } else {
-            return 'ready';
-        }
+        if ($this->stock_quantity <= 0) return 'empty';
+        if ($this->stock_quantity <= $this->stok_minimum) return 'low';
+        return 'ready';
     }
 }

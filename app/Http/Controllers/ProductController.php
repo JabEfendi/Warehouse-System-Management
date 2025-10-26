@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\WMS_Global;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -17,9 +17,8 @@ class ProductController extends Controller
         $search  = trim((string)$r->query('q', ''));
         $status  = $r->query('status');
 
-        $query = Product::query();
+        $query = WMS_Global::product()->newQuery();
 
-        // Filter pencarian
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -27,7 +26,6 @@ class ProductController extends Controller
             });
         }
 
-        // Filter status stok
         if ($status === 'ready') {
             $query->whereColumn('stock_quantity', '>', 'stok_minimum');
         } elseif ($status === 'low') {
@@ -50,8 +48,8 @@ class ProductController extends Controller
                     'harga_jual'     => $p->harga_jual,
                     'stock_quantity' => $p->stock_quantity,
                     'stok_minimum'   => $p->stok_minimum,
-                    'status'         => $p->stock_status, // ready / low / empty
-                    'created_at'     => $p->created_at->format('Y-m-d H:i'),
+                    'status'         => ($p->stock_quantity <= 0) ? 'empty': (($p->stock_quantity <= $p->stok_minimum) ? 'low' : 'ready'),
+                    'created_at'     => date('Y-m-d H:i', strtotime($p->created_at)),
                 ];
             }),
             'meta' => [
@@ -63,9 +61,15 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Simpan produk baru
-     */
+    public function formOptions()
+    {
+        return response()->json([
+            'categories' => WMS_Global::category()->select('id', 'name')->orderBy('name')->get(),
+            'uoms'       => WMS_Global::uom()->select('id', 'name')->orderBy('name')->get(),
+            'suppliers'  => WMS_Global::supplier()->select('id', 'name')->orderBy('name')->get(),
+        ]);
+    }
+
     public function store(Request $r)
     {
         $validated = $r->validate([
@@ -78,12 +82,13 @@ class ProductController extends Controller
             'category_id'    => 'nullable|exists:categories,id',
             'uom_id'         => 'nullable|exists:uoms,id',
             'supplier_id'    => 'nullable|exists:suppliers,id',
+            'is_active'      => 'nullable|boolean',
         ]);
 
         $validated['kode_product'] = 'PRD-' . strtoupper(Str::random(6));
         $validated['created_by']   = auth()->user()->name ?? 'system';
 
-        $product = Product::create($validated);
+        $product = WMS_Global::product()->create($validated);
 
         return response()->json([
             'message' => 'Produk berhasil ditambahkan.',
@@ -96,16 +101,24 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = WMS_Global::product()
+            ->leftJoin('categories', 'categories.id', '=', 'products.category_id')
+            ->leftJoin('uoms', 'uoms.id', '=', 'products.uom_id')
+            ->leftJoin('suppliers', 'suppliers.id', '=', 'products.supplier_id')
+            ->select(
+                'products.*',
+                'categories.name as category_name',
+                'uoms.name as uom_name',
+                'suppliers.name as supplier_name'
+            )
+            ->findOrFail($id);
+
         return response()->json($product);
     }
 
-    /**
-     * Update produk
-     */
     public function update(Request $r, $id)
     {
-        $product = Product::findOrFail($id);
+        $product = WMS_Global::product()->findOrFail($id);
 
         $validated = $r->validate([
             'name'           => 'required|string|max:255',
@@ -117,19 +130,23 @@ class ProductController extends Controller
             'category_id'    => 'nullable|exists:categories,id',
             'uom_id'         => 'nullable|exists:uoms,id',
             'supplier_id'    => 'nullable|exists:suppliers,id',
+            'is_active'      => 'nullable|boolean',
         ]);
+
+        $validated['updated_by'] = auth()->user()->name ?? 'system';
 
         $product->update($validated);
 
-        return response()->json(['message' => 'Produk berhasil diperbarui.']);
+        return response()->json([
+            'message' => 'Produk berhasil diperbarui.',
+            'product' => $product,
+        ]);
     }
 
-    /**
-     * Hapus produk
-     */
+
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        $product = WMS_Global::product()->findOrFail($id);
         $product->delete();
 
         return response()->json(['message' => 'Produk berhasil dihapus.']);
